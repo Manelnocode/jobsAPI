@@ -2,8 +2,9 @@ require('dotenv').config();
 require('express-async-errors');
 const express = require('express');
 const app = express();
-process.noDeprecation = true;
 
+// Ignore warning
+process.noDeprecation = true;
 
 
 // connectDB
