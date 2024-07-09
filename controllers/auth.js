@@ -15,25 +15,30 @@ const register = async (req, res) => {
     } catch (error) {
         console.log(error);
     }
-   
-    
 }
 
+// Cuando llamas const user = await User.create({ ...req.body }), creas una nueva instancia del modelo User con los datos proporcionados en req.body.
+
 const login = async (req, res) => {
-    const {email, password} = req.body
+    
+        const {email, password} = req.body
     
     if(!email || !password) {
         throw new BadRequestError('Please provide email and password')
     }
 
-    // Ver si existe el usuario
-
     const user = await User.findOne({email})
 
     if(!user) {
         throw new UnauthenticatedError('Invalid credentials')
+        
     }
 
+    const isPasswordCorrect = await user.comparePassword(password)
+    
+    if(!isPasswordCorrect) {
+        throw new UnauthenticatedError('Invalid credentials')
+    }
     const token = user.createJWT();
         res.status(StatusCodes.OK).json({ user: user.name, token: token });
 
