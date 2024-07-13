@@ -23,6 +23,9 @@ const userSchema = new mongoose.Schema({
     },
 })
 
+// Las siguientes funciones tienen la capacidad de usar this.
+// Como estamos partiendo de userSchema tenemos acceso al objeto y podemos interactuar con el.
+
 userSchema.pre('save', async function () {
     const salt = await bcrypt.genSalt(10)
     this.password = await bcrypt.hash(this.password, salt)
